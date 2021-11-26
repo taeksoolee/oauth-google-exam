@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <button onclick="submit();">google login</button>
+  <script src="./config.js"></script>
+  <script>
+    // https://developers.google.com/identity/protocols/oauth2/web-server#httprest_5
+    function submit(e) {
+      const {clientId, redirectUri} = CONFIG;
+
+      location.href=`https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code&scope=https://www.googleapis.com/auth/userinfo.profile&approval_prompt=force&access_type=offline`
+    }
+
+</script>
+</body>
+</html>

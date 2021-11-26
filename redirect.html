@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Callback</title>
+</head>
+<body>
+  <button onclick="submit()">Submit</button>
+
+  <script src="./config.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qs/6.10.1/qs.min.js" integrity="sha512-aTKlYRb1QfU1jlF3k+aS4AqTpnTXci4R79mkdie/bp6Xm51O5O3ESAYhvg6zoicj/PD6VYY0XrYwsWLcvGiKZQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script>
+
+    function submit() {
+      fetch('https://oauth2.googleapis.com/token', {
+        method: 'POST',
+        body: JSON.stringify({
+          client_id: CONFIG.clientId,
+          client_secret: CONFIG.clientSecret,
+          code: decodeURIComponent(Qs.parse(location.search.slice(1)).code),
+          redirect_uri: CONFIG.redirectUri,
+          grant_type: 'authorization_code',
+        }),
+      })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        const {access_token} = data;
+        fetch(
+          `https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=${access_token}`, 
+          /*{
+            mode: 'no-cors',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${access_token}`,
+              'Access-Control-Allow-Origin': '*',
+            }
+          }*/
+        )
+        .then((res2) => res2.json())
+        .then((data2) => {
+          console.log(data2)
+        })
+      })
+    }
+
+    
+    
+  </script>
+</body>
+</html>
